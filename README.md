@@ -63,7 +63,7 @@ LEARN/
 
 ### ARC Triangle Components
 
-- **A - Appreciation**: Value, care, and regard for others
+- **A - Appreciation (Affinity)**: Value, care, and regard for others
 - **R - Reality**: Shared understanding and truth
 - **C - Communication**: Exchange of information and ideas
 
@@ -97,4 +97,5 @@ LEARN/
 ---
 
 _This learning project is designed for self-paced study. Each module builds upon previous concepts._
+
 # LEARN
