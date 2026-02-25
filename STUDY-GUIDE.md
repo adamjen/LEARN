@@ -22,17 +22,17 @@ By completing this study path, you will be able to:
 
 #### Study Order:
 
-1. **Start with**: [`ARC-TRIANGLE/README.md`](./ARC-TRIANGLE/README.md)
+1. **Start with**: [`LEARN-DOCS/ARC-TRIANGLE/README.md`](./LEARN-DOCS/ARC-TRIANGLE/README.md)
    - Overview of the three components
    - How they interconnect
    - Why balance matters
 
 2. **Then study each component**:
-   - [`appreciation.md`](./ARC-TRIANGLE/appreciation.md) - Value and care for others
-   - [`reality.md`](./ARC-TRIANGLE/reality.md) - Shared understanding and truth
-   - [`communication.md`](./ARC-TRIANGLE/communication.md) - Exchange of information
+   - [`LEARN-DOCS/ARC-TRIANGLE/appreciation.md`](./LEARN-DOCS/ARC-TRIANGLE/appreciation.md) - Value and care for others
+   - [`LEARN-DOCS/ARC-TRIANGLE/reality.md`](./LEARN-DOCS/ARC-TRIANGLE/reality.md) - Shared understanding and truth
+   - [`LEARN-DOCS/ARC-TRIANGLE/communication.md`](./LEARN-DOCS/ARC-TRIANGLE/communication.md) - Exchange of information
 
-3. **Optional visual aid**: [`arc-triangle-diagram.md`](./ARC-TRIANGLE/arc-triangle-diagram.md)
+3. **Optional visual aid**: [`LEARN-DOCS/ARC-TRIANGLE/arc-triangle-diagram.md`](./LEARN-DOCS/ARC-TRIANGLE/arc-triangle-diagram.md)
 
 #### Key Concepts:
 
@@ -52,15 +52,15 @@ By completing this study path, you will be able to:
 
 #### Study Order:
 
-1. **Start with**: [`TONE-SCALE/README.md`](./TONE-SCALE/README.md)
+1. **Start with**: [`LEARN-DOCS/TONE-SCALE/README.md`](./LEARN-DOCS/TONE-SCALE/README.md)
    - Overview of the scale structure
    - Purpose and historical context
    - How to use it practically
 
 2. **Then study**:
-   - [`full-scale.md`](./TONE-SCALE/full-scale.md) - Complete scale from -40 to +40
-   - [`key-levels.md`](./TONE-SCALE/key-levels.md) - Important levels explained
-   - [`applying-tone-scale.md`](./TONE-SCALE/applying-tone-scale.md) - Practical application
+   - [`LEARN-DOCS/TONE-SCALE/full-scale.md`](./LEARN-DOCS/TONE-SCALE/full-scale.md) - Complete scale from -40 to +40
+   - [`LEARN-DOCS/TONE-SCALE/key-levels.md`](./LEARN-DOCS/TONE-SCALE/key-levels.md) - Important levels explained
+   - [`LEARN-DOCS/TONE-SCALE/applying-tone-scale.md`](./LEARN-DOCS/TONE-SCALE/applying-tone-scale.md) - Practical application
 
 #### Key Ranges:
 
@@ -108,16 +108,16 @@ By completing this study path, you will be able to:
 
 #### Study Order:
 
-1. **Start with**: [`EMOTIONAL-INTELLIGENCE/README.md`](./EMOTIONAL-INTELLIGENCE/README.md)
+1. **Start with**: [`LEARN-DOCS/EMOTIONAL-INTELLIGENCE/README.md`](./LEARN-DOCS/EMOTIONAL-INTELLIGENCE/README.md)
    - Overview of EQ concepts
    - Historical context
    - Connection to ARC and Tone Scale
 
 2. **Then study each model**:
-   - [`goleman-model.md`](./EMOTIONAL-INTELLIGENCE/goleman-model.md) - 5 components
-   - [`six-seconds-model.md`](./EMOTIONAL-INTELLIGENCE/six-seconds-model.md) - 3 pursuits, 8 competencies
-   - [`freedman-fariselli.md`](./EMOTIONAL-INTELLIGENCE/freedman-fariselli.md) - 8 EQ competencies
-   - [`arc-trauma-model.md`](./EMOTIONAL-INTELLIGENCE/arc-trauma-model.md) - Attachment, Regulation, Competency
+   - [`LEARN-DOCS/EMOTIONAL-INTELLIGENCE/goleman-model.md`](./LEARN-DOCS/EMOTIONAL-INTELLIGENCE/goleman-model.md) - 5 components
+   - [`LEARN-DOCS/EMOTIONAL-INTELLIGENCE/six-seconds-model.md`](./LEARN-DOCS/EMOTIONAL-INTELLIGENCE/six-seconds-model.md) - 3 pursuits, 8 competencies
+   - [`LEARN-DOCS/EMOTIONAL-INTELLIGENCE/freedman-fariselli.md`](./LEARN-DOCS/EMOTIONAL-INTELLIGENCE/freedman-fariselli.md) - 8 EQ competencies
+   - [`LEARN-DOCS/EMOTIONAL-INTELLIGENCE/arc-trauma-model.md`](./LEARN-DOCS/EMOTIONAL-INTELLIGENCE/arc-trauma-model.md) - Attachment, Regulation, Competency
 
 #### EQ Models Comparison:
 
@@ -137,14 +137,14 @@ By completing this study path, you will be able to:
 
 ### Study Order:
 
-1. **Start with**: [`INTERCONNECTEDNESS/README.md`](./INTERCONNECTEDNESS/README.md)
+1. **Start with**: [`LEARN-DOCS/INTERCONNECTEDNESS/README.md`](./LEARN-DOCS/INTERCONNECTEDNESS/README.md)
    - Overview of how frameworks connect
    - Common themes and complementary perspectives
 
 2. **Then study each connection**:
-   - [`arc-and-tone.md`](./INTERCONNECTEDNESS/arc-and-tone.md) - ARC ↔ Tone Scale
-   - [`tone-and-eq.md`](./INTERCONNECTEDNESS/tone-and-eq.md) - Tone Scale ↔ EQ
-   - [`arc-and-eq.md`](./INTERCONNECTEDNESS/arc-and-eq.md) - ARC ↔ EQ
+   - [`LEARN-DOCS/INTERCONNECTEDNESS/arc-and-tone.md`](./LEARN-DOCS/INTERCONNECTEDNESS/arc-and-tone.md) - ARC ↔ Tone Scale
+   - [`LEARN-DOCS/INTERCONNECTEDNESS/tone-and-eq.md`](./LEARN-DOCS/INTERCONNECTEDNESS/tone-and-eq.md) - Tone Scale ↔ EQ
+   - [`LEARN-DOCS/INTERCONNECTEDNESS/arc-and-eq.md`](./LEARN-DOCS/INTERCONNECTEDNESS/arc-and-eq.md) - ARC ↔ EQ
 
 ### Key Relationships:
 
@@ -176,14 +176,14 @@ flowchart TD
 
 ### Study Order:
 
-1. **Start with**: [`PRACTICAL-APPLICATIONS/README.md`](./PRACTICAL-APPLICATIONS/README.md)
+1. **Start with**: [`LEARN-DOCS/PRACTICAL-APPLICATIONS/README.md`](./LEARN-DOCS/PRACTICAL-APPLICATIONS/README.md)
    - Overview of practical tools
    - Getting started guide
 
 2. **Then study each application**:
-   - [`self-assessment.md`](./PRACTICAL-APPLICATIONS/self-assessment.md) - Identify your patterns
-   - [`communication-tools.md`](./PRACTICAL-APPLICATIONS/communication-tools.md) - Improve relationships
-   - [`emotional-regulation.md`](./PRACTICAL-APPLICATIONS/emotional-regulation.md) - Manage emotions
+   - [`LEARN-DOCS/PRACTICAL-APPLICATIONS/self-assessment.md`](./LEARN-DOCS/PRACTICAL-APPLICATIONS/self-assessment.md) - Identify your patterns
+   - [`LEARN-DOCS/PRACTICAL-APPLICATIONS/communication-tools.md`](./LEARN-DOCS/PRACTICAL-APPLICATIONS/communication-tools.md) - Improve relationships
+   - [`LEARN-DOCS/PRACTICAL-APPLICATIONS/emotional-regulation.md`](./LEARN-DOCS/PRACTICAL-APPLICATIONS/emotional-regulation.md) - Manage emotions
 
 ### Practical Skills:
 

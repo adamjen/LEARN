@@ -13,31 +13,32 @@ This project is designed to help you learn about:
 ```
 LEARN/
 ├── README.md                    # This file
-├── ARC-TRIANGLE/
-│   ├── README.md                # ARC Triangle overview
-│   ├── appreciation.md          # Appreciation component
-│   ├── reality.md               # Reality component
-│   ├── communication.md         # Communication component
-│   └── arc-triangle-diagram.md  # Visual representation
-├── TONE-SCALE/
-│   ├── README.md                # Tone Scale overview
-│   ├── full-scale.md            # Complete Tone Scale (-40 to +40)
-│   ├── key-levels.md            # Important tone levels explained
-│   └── applying-tone-scale.md   # How to use the Tone Scale
-├── EMOTIONAL-INTELLIGENCE/
-│   ├── README.md                # EQ overview
-│   ├── goleman-model.md         # Daniel Goleman's 5 components
-│   ├── six-seconds-model.md     # Six Seconds EQ model
-│   ├── freedman-fariselli.md    # 8 EQ Competencies model
-│   └── arc-trauma-model.md      # Attachment, Regulation, Competency model
-├── INTERCONNECTEDNESS/
-│   ├── arc-and-tone.md          # How ARC relates to Tone Scale
-│   ├── tone-and-eq.md           # How Tone Scale relates to EQ
-│   └── arc-and-eq.md            # How ARC relates to EQ frameworks
-└── PRACTICAL-APPLICATIONS/
-    ├── self-assessment.md       # Self-reflection exercises
-    ├── communication-tools.md   # Using ARC for better communication
-    └── emotional-regulation.md  # Applying Tone Scale for self-regulation
+├── LEARN-DOCS/
+│   ├── ARC-TRIANGLE/
+│   │   ├── README.md            # ARC Triangle overview
+│   │   ├── appreciation.md      # Appreciation component
+│   │   ├── reality.md           # Reality component
+│   │   ├── communication.md     # Communication component
+│   │   └── arc-triangle-diagram.md  # Visual representation
+│   ├── TONE-SCALE/
+│   │   ├── README.md            # Tone Scale overview
+│   │   ├── full-scale.md        # Complete Tone Scale (-40 to +40)
+│   │   ├── key-levels.md        # Important tone levels explained
+│   │   └── applying-tone-scale.md   # How to use the Tone Scale
+│   ├── EMOTIONAL-INTELLIGENCE/
+│   │   ├── README.md            # EQ overview
+│   │   ├── goleman-model.md     # Daniel Goleman's 5 components
+│   │   ├── six-seconds-model.md # Six Seconds EQ model
+│   │   ├── freedman-fariselli.md # 8 EQ Competencies model
+│   │   └── arc-trauma-model.md  # Attachment, Regulation, Competency model
+│   ├── INTERCONNECTEDNESS/
+│   │   ├── arc-and-tone.md      # How ARC relates to Tone Scale
+│   │   ├── tone-and-eq.md       # How Tone Scale relates to EQ
+│   │   └── arc-and-eq.md        # How ARC relates to EQ frameworks
+│   └── PRACTICAL-APPLICATIONS/
+│       ├── self-assessment.md   # Self-reflection exercises
+│       ├── communication-tools.md # Using ARC for better communication
+│       └── emotional-regulation.md # Applying Tone Scale for self-regulation
 ```
 
 ## Learning Path
@@ -83,9 +84,9 @@ LEARN/
 
 ## Getting Started
 
-1. Start with [`ARC-TRIANGLE/README.md`](./ARC-TRIANGLE/README.md)
-2. Then explore [`TONE-SCALE/README.md`](./TONE-SCALE/README.md)
-3. Finally, review [`EMOTIONAL-INTELLIGENCE/README.md`](./EMOTIONAL-INTELLIGENCE/README.md)
+1. Start with [`LEARN-DOCS/ARC-TRIANGLE/README.md`](./LEARN-DOCS/ARC-TRIANGLE/README.md)
+2. Then explore [`LEARN-DOCS/TONE-SCALE/README.md`](./LEARN-DOCS/TONE-SCALE/README.md)
+3. Finally, review [`LEARN-DOCS/EMOTIONAL-INTELLIGENCE/README.md`](./LEARN-DOCS/EMOTIONAL-INTELLIGENCE/README.md)
 
 ## Resources
 
