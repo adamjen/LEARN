@@ -21,8 +21,8 @@ describe('Tone Scale Utilities', () => {
   });
 
   describe('TONE_SCALE data', () => {
-    it('should contain 15 tone levels', () => {
-      expect(toneScale.TONE_SCALE.length).toBe(15);
+    it('should contain 16 tone levels', () => {
+      expect(toneScale.TONE_SCALE.length).toBe(16);
     });
 
     it('should include all key levels from -40 to +40', () => {
@@ -61,7 +61,7 @@ describe('Tone Scale Utilities', () => {
 
     it('should correctly identify negative tones', () => {
       const negativeTones = toneScale.TONE_SCALE.filter(t => !t.isPositive);
-      expect(negativeTones.length).toBe(8);
+      expect(negativeTones.length).toBe(9);
     });
   });
 
@@ -134,9 +134,9 @@ describe('Tone Scale Utilities', () => {
 
   describe('getToneDescription', () => {
     it('should return correct descriptions', () => {
-      expect(toneScale.getToneDescription(40)).toContain('Serenity');
-      expect(toneScale.getToneDescription(10)).toContain('Cheerful');
-      expect(toneScale.getToneDescription(0)).toContain('Neutrality');
+      expect(toneScale.getToneDescription(40)).toContain('Perfect peace and beingness');
+      expect(toneScale.getToneDescription(10)).toContain('Happy and lighthearted');
+      expect(toneScale.getToneDescription(0)).toContain('Neutral state');
     });
 
     it('should return default for invalid values', () => {
@@ -154,7 +154,7 @@ describe('Tone Scale Utilities', () => {
     });
 
     it('should return medium green for moderate positive tones', () => {
-      expect(toneScale.getToneColor(15)).toBe('text-green-500');
+      expect(toneScale.getToneColor(15)).toBe('text-green-600');
       expect(toneScale.getToneColor(10)).toBe('text-green-500');
     });
 
@@ -174,7 +174,7 @@ describe('Tone Scale Utilities', () => {
 
     it('should return orange for moderate negative tones', () => {
       expect(toneScale.getToneColor(-10)).toBe('text-orange-500');
-      expect(toneScale.getToneColor(-15)).toBe('text-orange-500');
+      expect(toneScale.getToneColor(-15)).toBe('text-orange-400');
     });
 
     it('should return red for high negative tones', () => {
@@ -187,7 +187,7 @@ describe('Tone Scale Utilities', () => {
   describe('getToneBgColor', () => {
     it('should return light green background for high positive tones', () => {
       expect(toneScale.getToneBgColor(40)).toBe('bg-green-100');
-      expect(toneScale.getToneBgColor(30)).toBe('bg-green-50');
+      expect(toneScale.getToneBgColor(30)).toBe('bg-green-100');
     });
 
     it('should return yellow background for neutral tones', () => {
@@ -355,7 +355,7 @@ describe('Tone Scale Utilities', () => {
   describe('getAllToneLevels', () => {
     it('should return all tone levels', () => {
       const levels = toneScale.getAllToneLevels();
-      expect(levels.length).toBe(15);
+      expect(levels.length).toBe(16);
     });
 
     it('should return a copy of the array', () => {

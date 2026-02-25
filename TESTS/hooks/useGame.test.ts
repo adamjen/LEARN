@@ -95,6 +95,11 @@ describe('useGame Hook', () => {
         result.current.actions.startGame();
       });
       
+      // Advance time past the timeout (500ms)
+      act(() => {
+        vi.advanceTimersByTime(600);
+      });
+      
       expect(result.current.gameState.gameState).toBe(GameState.PLAYING);
       expect(result.current.gameState.currentTone).toBe(0);
     });
@@ -104,6 +109,11 @@ describe('useGame Hook', () => {
       
       act(() => {
         result.current.actions.startGame(10);
+      });
+      
+      // Advance time past the timeout (500ms)
+      act(() => {
+        vi.advanceTimersByTime(600);
       });
       
       expect(result.current.gameState.currentTone).toBe(10);
@@ -116,11 +126,37 @@ describe('useGame Hook', () => {
         result.current.actions.startGame();
       });
       
+      // Advance time past the timeout (500ms)
+      act(() => {
+        vi.advanceTimersByTime(600);
+      });
+      
       expect(result.current.gameState.gameState).toBe(GameState.PLAYING);
     });
 
     it('should clear selectedOption on start', () => {
       const { result } = renderHook(() => useGame());
+      
+      // Start game and load scenario first
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       // Set a selected option first
       act(() => {
@@ -134,11 +170,37 @@ describe('useGame Hook', () => {
         result.current.actions.startGame();
       });
       
+      // Advance time past the timeout (500ms)
+      act(() => {
+        vi.advanceTimersByTime(600);
+      });
+      
       expect(result.current.gameState.selectedOption).toBeNull();
     });
 
     it('should clear feedback on start', () => {
       const { result } = renderHook(() => useGame());
+      
+      // Start game and load scenario first
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       // Set feedback first
       act(() => {
@@ -150,6 +212,11 @@ describe('useGame Hook', () => {
       // Start game should clear it
       act(() => {
         result.current.actions.startGame();
+      });
+      
+      // Advance time past the timeout (500ms)
+      act(() => {
+        vi.advanceTimersByTime(600);
       });
       
       expect(result.current.gameState.showFeedback).toBe(false);
@@ -176,8 +243,10 @@ describe('useGame Hook', () => {
       
       expect(result.current.gameState.isLoading).toBe(true);
       
-      // Advance time past the timeout
-      vi.advanceTimersByTime(600);
+      // Advance time past the timeout (500ms)
+      act(() => {
+        vi.advanceTimersByTime(600);
+      });
       
       expect(result.current.gameState.isLoading).toBe(false);
     });
@@ -186,6 +255,27 @@ describe('useGame Hook', () => {
   describe('selectResponse action', () => {
     it('should select response option', () => {
       const { result } = renderHook(() => useGame());
+      
+      // Start game and load scenario first
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       act(() => {
         result.current.actions.selectResponse('option-1');
@@ -208,6 +298,27 @@ describe('useGame Hook', () => {
     it('should show feedback after selection', () => {
       const { result } = renderHook(() => useGame());
       
+      // Start game and load scenario first
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
+      
       act(() => {
         result.current.actions.selectResponse('option-1');
       });
@@ -223,18 +334,54 @@ describe('useGame Hook', () => {
         result.current.actions.startGame(5);
       });
       
-      vi.advanceTimersByTime(500);
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
-      // Select response with tone impact of 3
+      // Load a scenario
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
+      
+      // Select response with tone impact of 2 (from createMockScenario)
       act(() => {
         result.current.actions.selectResponse('option-1');
       });
       
-      expect(result.current.gameState.currentTone).toBe(8);
+      expect(result.current.gameState.currentTone).toBe(7);
     });
 
     it('should set feedback result with response data', () => {
       const { result } = renderHook(() => useGame());
+      
+      // Start game first to have a scenario
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       act(() => {
         result.current.actions.selectResponse('option-1');
@@ -262,7 +409,9 @@ describe('useGame Hook', () => {
         result.current.actions.nextScenario(mockScenarios);
       });
       
-      vi.advanceTimersByTime(300);
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       expect(result.current.gameState.currentScenario).toBeDefined();
       expect(mockScenarios.some(s => s.id === result.current.gameState.currentScenario?.id)).toBe(true);
@@ -271,11 +420,14 @@ describe('useGame Hook', () => {
     it('should clear selected option when loading new scenario', () => {
       const { result } = renderHook(() => useGame());
       
+      // Start game and load scenario first
       act(() => {
-        result.current.actions.selectResponse('option-1');
+        result.current.actions.startGame();
       });
       
-      expect(result.current.gameState.selectedOption).toBe('option-1');
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
       const mockScenarios: Scenario[] = [
         createMockScenario('1'),
@@ -285,7 +437,24 @@ describe('useGame Hook', () => {
         result.current.actions.nextScenario(mockScenarios);
       });
       
-      vi.advanceTimersByTime(300);
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
+      
+      act(() => {
+        result.current.actions.selectResponse('option-1');
+      });
+      
+      expect(result.current.gameState.selectedOption).toBe('option-1');
+      
+      // Load another scenario
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       expect(result.current.gameState.selectedOption).toBeNull();
     });
@@ -293,11 +462,14 @@ describe('useGame Hook', () => {
     it('should hide feedback when loading new scenario', () => {
       const { result } = renderHook(() => useGame());
       
+      // Start game and load scenario first
       act(() => {
-        result.current.actions.selectResponse('option-1');
+        result.current.actions.startGame();
       });
       
-      expect(result.current.gameState.showFeedback).toBe(true);
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
       const mockScenarios: Scenario[] = [
         createMockScenario('1'),
@@ -307,7 +479,24 @@ describe('useGame Hook', () => {
         result.current.actions.nextScenario(mockScenarios);
       });
       
-      vi.advanceTimersByTime(300);
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
+      
+      act(() => {
+        result.current.actions.selectResponse('option-1');
+      });
+      
+      expect(result.current.gameState.showFeedback).toBe(true);
+      
+      // Load another scenario
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       expect(result.current.gameState.showFeedback).toBe(false);
     });
@@ -337,7 +526,9 @@ describe('useGame Hook', () => {
         result.current.actions.nextScenario(mockScenarios);
       });
       
-      vi.advanceTimersByTime(300);
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       expect(result.current.gameState.isLoading).toBe(false);
     });
@@ -387,7 +578,9 @@ describe('useGame Hook', () => {
         result.current.actions.startGame(10);
       });
       
-      vi.advanceTimersByTime(500);
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
       act(() => {
         result.current.actions.resetGame();
@@ -403,7 +596,9 @@ describe('useGame Hook', () => {
         result.current.actions.startGame(15);
       });
       
-      vi.advanceTimersByTime(500);
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
       act(() => {
         result.current.actions.resetGame();
@@ -423,7 +618,9 @@ describe('useGame Hook', () => {
         result.current.actions.nextScenario(mockScenarios);
       });
       
-      vi.advanceTimersByTime(300);
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       act(() => {
         result.current.actions.resetGame();
@@ -434,6 +631,27 @@ describe('useGame Hook', () => {
 
     it('should reset selectedOption to null', () => {
       const { result } = renderHook(() => useGame());
+      
+      // Start game and load scenario first
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       act(() => {
         result.current.actions.selectResponse('option-1');
@@ -448,6 +666,27 @@ describe('useGame Hook', () => {
 
     it('should hide feedback on reset', () => {
       const { result } = renderHook(() => useGame());
+      
+      // Start game and load scenario first
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       act(() => {
         result.current.actions.selectResponse('option-1');
@@ -464,6 +703,27 @@ describe('useGame Hook', () => {
 
     it('should clear feedback result on reset', () => {
       const { result } = renderHook(() => useGame());
+      
+      // Start game and load scenario first
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       act(() => {
         result.current.actions.selectResponse('option-1');
@@ -483,6 +743,27 @@ describe('useGame Hook', () => {
     it('should hide feedback', () => {
       const { result } = renderHook(() => useGame());
       
+      // Start game first to have a scenario
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
+      
       act(() => {
         result.current.actions.selectResponse('option-1');
       });
@@ -499,6 +780,27 @@ describe('useGame Hook', () => {
     it('should clear selected option', () => {
       const { result } = renderHook(() => useGame());
       
+      // Start game first to have a scenario
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
+      
       act(() => {
         result.current.actions.selectResponse('option-1');
       });
@@ -514,6 +816,27 @@ describe('useGame Hook', () => {
 
     it('should clear feedback result', () => {
       const { result } = renderHook(() => useGame());
+      
+      // Start game first to have a scenario
+      act(() => {
+        result.current.actions.startGame();
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
+      
+      const mockScenarios: Scenario[] = [
+        createMockScenario('1'),
+      ];
+      
+      act(() => {
+        result.current.actions.nextScenario(mockScenarios);
+      });
+      
+      act(() => {
+        vi.advanceTimersByTime(301);
+      });
       
       act(() => {
         result.current.actions.selectResponse('option-1');
@@ -535,7 +858,9 @@ describe('useGame Hook', () => {
         result.current.actions.startGame(10);
       });
       
-      vi.advanceTimersByTime(500);
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
       act(() => {
         result.current.actions.continueGame();
@@ -556,7 +881,9 @@ describe('useGame Hook', () => {
         result.current.actions.startGame();
       });
       
-      vi.advanceTimersByTime(500);
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
       expect(result.current.gameState.gameState).toBe(GameState.PLAYING);
     });
@@ -568,7 +895,9 @@ describe('useGame Hook', () => {
         result.current.actions.startGame();
       });
       
-      vi.advanceTimersByTime(500);
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
       expect(result.current.gameState.gameState).toBe(GameState.PLAYING);
       
@@ -587,7 +916,9 @@ describe('useGame Hook', () => {
         result.current.actions.startGame();
       });
       
-      vi.advanceTimersByTime(500);
+      act(() => {
+        vi.advanceTimersByTime(501);
+      });
       
       act(() => {
         result.current.actions.endGame();

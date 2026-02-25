@@ -207,12 +207,18 @@ describe('useScore Hook', () => {
     });
 
     it('should not update bestStreak when streak is below best', () => {
-      const { result } = renderHook(() => useScore(0, 5));
+      // Initialize with streak=2 and bestStreak=5 (using 4th parameter)
+      const { result } = renderHook(() => useScore(0, 2, 0, 5));
+      
+      expect(result.current.scoreData.streak).toBe(2);
+      expect(result.current.scoreData.bestStreak).toBe(5);
       
       act(() => {
         result.current.actions.addStreak();
       });
       
+      // streak becomes 3, which is still below bestStreak of 5
+      expect(result.current.scoreData.streak).toBe(3);
       expect(result.current.scoreData.bestStreak).toBe(5);
     });
   });
@@ -603,10 +609,11 @@ describe('useScore Hook', () => {
 
   describe('utilities - calculateTotalAchievementPoints', () => {
     it('should sum points for unlocked achievements', () => {
-      const { result } = renderHook(() => useScore());
+      // Initialize with totalResponses = 1 to unlock first_response achievement
+      const { result } = renderHook(() => useScore(0, 0, 0, 0, 0, 0, 0, 0, 1));
       
       const achievements = result.current.utilities.getAchievements();
-      const unlocked = achievements.filter(a => a.id === 'first_response');
+      const unlocked = achievements.filter(a => a.id === 'first_response' && a.unlocked);
       
       const points = result.current.utilities.calculateTotalAchievementPoints(unlocked);
       

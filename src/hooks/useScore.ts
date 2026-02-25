@@ -95,21 +95,28 @@ interface Achievement {
 export const useScore = (
   initialScore: number = 0,
   initialStreak: number = 0,
-  initialBestScore: number = 0,
-  initialBestStreak: number = 0
+  initialBestScore?: number,
+  initialBestStreak?: number,
+  initialScenariosCompleted?: number,
+  initialScenariosPlayed?: number,
+  initialCurrentTone?: number,
+  initialBestTone?: number,
+  initialTotalResponses?: number,
+  initialPositiveResponses?: number,
+  initialNegativeResponses?: number
 ) => {
   // Score state
   const [score, setScore] = useState<number>(initialScore);
-  const [bestScore, setBestScore] = useState<number>(initialBestScore);
+  const [bestScore, setBestScore] = useState<number>(initialBestScore ?? initialScore);
   const [streak, setStreak] = useState<number>(initialStreak);
-  const [bestStreak, setBestStreak] = useState<number>(initialBestStreak);
-  const [scenariosCompleted, setScenariosCompleted] = useState<number>(0);
-  const [scenariosPlayed, setScenariosPlayed] = useState<number>(0);
-  const [currentTone, setCurrentTone] = useState<number>(0);
-  const [bestTone, setBestTone] = useState<number>(0);
-  const [totalResponses, setTotalResponses] = useState<number>(0);
-  const [positiveResponses, setPositiveResponses] = useState<number>(0);
-  const [negativeResponses, setNegativeResponses] = useState<number>(0);
+  const [bestStreak, setBestStreak] = useState<number>(initialBestStreak ?? initialStreak);
+  const [scenariosCompleted, setScenariosCompleted] = useState<number>(initialScenariosCompleted ?? 0);
+  const [scenariosPlayed, setScenariosPlayed] = useState<number>(initialScenariosPlayed ?? 0);
+  const [currentTone, setCurrentTone] = useState<number>(initialCurrentTone ?? 0);
+  const [bestTone, setBestTone] = useState<number>(initialBestTone ?? (initialCurrentTone ?? 0));
+  const [totalResponses, setTotalResponses] = useState<number>(initialTotalResponses ?? 0);
+  const [positiveResponses, setPositiveResponses] = useState<number>(initialPositiveResponses ?? 0);
+  const [negativeResponses, setNegativeResponses] = useState<number>(initialNegativeResponses ?? 0);
 
   // Calculate average score
   const averageScore = useMemo(() => {
@@ -309,8 +316,11 @@ export const useScore = (
   const actions = useMemo(() => ({
     /** Add score */
     addScore: (points: number) => {
-      setScore(prev => prev + points);
-      setBestScore(prev => Math.max(prev, prev + points));
+      setScore(prev => {
+        const newScore = prev + points;
+        setBestScore(best => Math.max(best, newScore));
+        return newScore;
+      });
     },
     
     /** Set score */
@@ -321,8 +331,11 @@ export const useScore = (
     
     /** Add to streak */
     addStreak: () => {
-      setStreak(prev => prev + 1);
-      setBestStreak(prev => Math.max(prev, streak + 1));
+      setStreak(prev => {
+        const newStreak = prev + 1;
+        setBestStreak(best => Math.max(best, newStreak));
+        return newStreak;
+      });
     },
     
     /** Reset streak */

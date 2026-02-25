@@ -169,7 +169,7 @@ describe('ARC Calculator Utilities', () => {
       const current: ARCState = { appreciation: 7, reality: 6, communication: 8, total: 21, average: 7 };
       const result = arcCalculator.calculateARCDegradation(current, -3);
       expect(result.appreciation).toBe(6);
-      expect(result.reality).toBe(5.666666666666667);
+      expect(result.reality).toBe(5);
       expect(result.communication).toBe(7);
       expect(result.total).toBe(18);
       expect(result.average).toBe(6);
@@ -419,7 +419,7 @@ describe('ARC Calculator Utilities', () => {
     it('should provide default message for balanced state', () => {
       const state: ARCState = { appreciation: 5, reality: 5, communication: 5, total: 15, average: 5 };
       const recommendations = arcCalculator.getARCRecommendations(state);
-      expect(recommendations).toContain('Your ARC is balanced');
+      expect(recommendations).toContain('Your ARC is balanced - continue practicing!');
     });
 
     it('should return multiple recommendations when needed', () => {

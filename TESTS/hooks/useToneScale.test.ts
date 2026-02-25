@@ -145,8 +145,8 @@ describe('useToneScale Hook', () => {
     it('should get tone description for known values', () => {
       const { result } = renderHook(() => useToneScale());
       
-      expect(result.current.utilities.getDescription(40)).toContain('Serenity');
-      expect(result.current.utilities.getDescription(10)).toContain('Cheerful');
+      expect(result.current.utilities.getDescription(40)).toContain('Perfect peace and beingness');
+      expect(result.current.utilities.getDescription(10)).toContain('Happy and lighthearted');
     });
   });
 
@@ -331,7 +331,7 @@ describe('useToneScale Hook', () => {
       const levels = result.current.utilities.getAllLevels();
       
       expect(Array.isArray(levels)).toBe(true);
-      expect(levels.length).toBe(15);
+      expect(levels.length).toBe(16);
     });
   });
 
