@@ -9,15 +9,19 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '../lib/cn';
+import { cn } from '../../lib/cn';
 import { Button } from '../ui/Button';
-import { ScenarioFeedback } from '../../types/scenarios';
 
 interface FeedbackModalProps {
   /** Whether modal is visible */
   isOpen: boolean;
   /** Feedback data to display */
-  feedback: ScenarioFeedback | null;
+  feedback: {
+    isOptimal: boolean;
+    toneChange: number;
+    newToneLevel: number;
+    explanation: string;
+  } | null;
   /** Callback when modal is closed */
   onClose: () => void;
   /** Callback when continue button is clicked */
@@ -99,8 +103,6 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
     return null;
   }
 
-  const { isOptimal, toneChange, newToneLevel, explanation, learningPoints, alternative } = feedback;
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -109,113 +111,88 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
           animate="animate"
           exit="exit"
           variants={modalVariants}
-          transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
           onClick={onClose}
         >
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={contentVariants}
+            className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
-            <div className={cn(
-              'p-6 text-white text-center',
-              isOptimal ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-orange-500 to-orange-600'
-            )}>
-              <div className="flex justify-center mb-3">
-                {getFeedbackIcon(isOptimal)}
+            {/* Header with icon */}
+            <div className="flex items-center justify-center mb-6">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-gray-100">
+                {getFeedbackIcon(feedback.isOptimal)}
               </div>
-              <h2 className="text-2xl font-bold">
-                {isOptimal ? 'Great Response!' : 'Learn from This Response'}
-              </h2>
-              <span className={cn(
-                'inline-block mt-2 px-3 py-1 rounded-full text-sm font-medium',
-                getBadgeColor(isOptimal)
-              )}>
-                {isOptimal ? 'Optimal Choice' : 'Alternative Considered'}
-              </span>
             </div>
 
-            {/* Content */}
-            <div className="p-6">
-              {/* Tone Change */}
-              <div className={cn(
-                'mb-6 p-4 rounded-lg text-center',
-                toneChange >= 0 ? 'bg-green-50' : 'bg-red-50'
-              )}>
-                <div className="text-sm text-gray-600 mb-1">Tone Change</div>
-                <div className={cn(
-                  'text-3xl font-bold',
-                  toneChange >= 0 ? 'text-green-600' : 'text-red-600'
-                )}>
-                  {toneChange >= 0 ? '+' : ''}{toneChange}
-                </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  New Level: <span className="font-semibold">{newToneLevel.toFixed(1)}</span>
+            {/* Title */}
+            <h2 className={cn(
+              'text-2xl font-bold text-center mb-4',
+              feedback.isOptimal ? 'text-green-600' : 'text-orange-600'
+            )}>
+              {feedback.isOptimal ? 'Great Response!' : 'Consider a Different Approach'}
+            </h2>
+
+            {/* Explanation */}
+            <p className="text-gray-700 text-center mb-6">
+              {feedback.explanation}
+            </p>
+
+            {/* Tone Change Info */}
+            <div className={cn(
+              'p-4 rounded-lg mb-6',
+              feedback.toneChange >= 0 ? 'bg-green-50' : 'bg-orange-50'
+            )}>
+              <div className="text-center">
+                <span className="text-sm text-gray-600">Tone Change:</span>
+                <div className="text-2xl font-bold mt-1">
+                  <span className={cn(
+                    feedback.toneChange >= 0 ? 'text-green-600' : 'text-orange-600'
+                  )}>
+                    {feedback.toneChange >= 0 ? '+' : ''}{feedback.toneChange}
+                  </span>
+                  {' → '}
+                  <span className="text-gray-800">
+                    New Level: {feedback.newToneLevel}
+                  </span>
                 </div>
               </div>
+            </div>
 
-              {/* Explanation */}
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Why This Response?</h3>
-                <p className="text-gray-700 leading-relaxed">{explanation}</p>
-              </div>
+            {/* Learning Points */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-800 mb-3">Learning Points:</h3>
+              <ul className="list-disc list-inside space-y-1 text-gray-700">
+                <li>Active listening builds appreciation</li>
+                <li>Clear communication prevents misunderstandings</li>
+                <li>Reality checking helps align expectations</li>
+              </ul>
+            </div>
 
-              {/* Learning Points */}
-              {learningPoints && learningPoints.length > 0 && (
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Key Learning Points</h3>
-                  <ul className="space-y-2">
-                    {learningPoints.map((point, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 + 0.2 }}
-                        className="flex items-start"
-                      >
-                        <svg className="w-5 h-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-gray-700">{point}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Alternative Suggestion */}
-              {alternative && (
-                <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <h3 className="text-lg font-semibold text-blue-800 mb-2">Alternative Approach</h3>
-                  <p className="text-blue-700">{alternative}</p>
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
+            {/* Action Buttons */}
+            <div className="flex gap-4">
+              <Button
+                onClick={onClose}
+                variant="outline"
+                size="lg"
+                className="flex-1"
+              >
+                Close
+              </Button>
+              {onContinue && (
                 <Button
-                  onClick={onClose}
-                  variant="outline"
-                  className="flex-1"
-                >
-                  Review Again
-                </Button>
-                <Button
-                  onClick={() => {
-                    onClose();
-                    onContinue?.();
-                  }}
+                  onClick={onContinue}
                   variant="primary"
+                  size="lg"
                   className="flex-1"
                 >
                   Continue
                 </Button>
-              </div>
+              )}
             </div>
           </motion.div>
         </motion.div>

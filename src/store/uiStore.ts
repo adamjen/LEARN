@@ -341,4 +341,4 @@ export default useUIStore;
  * Helper function to reset the UI store
  * Useful for testing or manual state resets
  */
-export const resetUIStore = () => useUIStore.getState().reset();
+export const resetUIStore = () => useUIStore.getState().resetUI();

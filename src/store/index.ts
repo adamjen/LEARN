@@ -16,7 +16,6 @@ export {
   GameState,
   Scenario,
   SelectedResponse,
-  getDefaultScenarios,
 } from './gameStore';
 
 export {

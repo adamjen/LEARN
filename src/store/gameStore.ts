@@ -9,6 +9,8 @@
 
 import { create } from 'zustand';
 import { persist, PersistStorage } from 'zustand/middleware';
+import { ScenarioCategory, ScenarioDifficulty } from '../types/scenarios';
+import { ARCState } from '../types/game';
 
 /**
  * Game state enumeration
@@ -26,12 +28,18 @@ export interface Scenario {
   id: string;
   title: string;
   description: string;
+  context: string;
+  category: ScenarioCategory;
+  difficulty: ScenarioDifficulty;
+  initialARC: ARCState;
+  initialTone: number;
   toneLevel: number;
   options: Array<{
     id: string;
     text: string;
     toneChange: number;
   }>;
+  tags?: string[];
 }
 
 /**
@@ -149,7 +157,7 @@ export const useGameStore = create<GameStoreState>()(
        * selectResponse('scenario-1', 'option-a', 2.5);
        */
       selectResponse: (scenarioId: string, optionId: string, toneChange: number) => {
-        const { currentToneLevel } = get();
+        const { currentToneLevel, toneHistory } = get();
         const newToneLevel = currentToneLevel + toneChange;
         
         set({
@@ -160,93 +168,94 @@ export const useGameStore = create<GameStoreState>()(
             timestamp: Date.now(),
           },
           currentToneLevel: newToneLevel,
-          toneHistory: [...get().toneHistory, newToneLevel],
+          toneHistory: [...toneHistory, newToneLevel],
         });
       },
 
       /**
-       * Move to the next scenario in the game
+       * Move to the next scenario
        * 
-       * Sets the next scenario from the provided array.
-       * If no scenarios remain, ends the game.
+       * Loads the next scenario from the provided array.
+       * If no scenarios are provided, the current scenario is kept.
        * 
-       * @param scenarios - Array of available scenarios
+       * @param scenarios - Array of scenarios to choose from
        * 
        * @example
-       * const scenarios = useGameStore.getState().scenarios;
-       * nextScenario(scenarios);
+       * nextScenario(scenarioList); // Load next scenario
        */
-      nextScenario: (scenarios: Scenario[]) => {
-        const { gameState } = get();
+      nextScenario: (scenarios: Scenario[] = []) => {
+        const { currentScenario } = get();
         
-        if (gameState !== GameState.PLAYING) {
+        // If no scenarios provided, keep current scenario
+        if (scenarios.length === 0) {
           return;
         }
-
-        // Find the next scenario (simple implementation - first scenario)
-        const nextScenario = scenarios[0] || null;
         
+        // Randomly select a scenario
+        const randomIndex = Math.floor(Math.random() * scenarios.length);
         set({
-          currentScenario: nextScenario,
-          selectedResponse: null,
+          currentScenario: scenarios[randomIndex],
         });
       },
 
       /**
        * End the current game session
        * 
-       * Sets the game state to COMPLETED and clears the current scenario.
+       * Sets the game state to COMPLETED.
        * 
        * @example
-       * endGame(); // Mark game as completed
+       * endGame(); // Mark game as complete
        */
       endGame: () => {
         set({
           gameState: GameState.COMPLETED,
-          currentScenario: null,
         });
       },
 
       /**
        * Set the tone level directly
        * 
-       * Updates the current tone level and records it in history.
-       * Useful for testing or manual adjustments.
-       * 
        * @param level - The tone level to set
        * 
        * @example
-       * setToneLevel(15.0); // Set tone to +15 (Gay/Cheerful)
+       * setToneLevel(15.0); // Set tone to +15
        */
       setToneLevel: (level: number) => {
+        const { toneHistory } = get();
         set({
           currentToneLevel: level,
-          toneHistory: [...get().toneHistory, level],
+          toneHistory: [...toneHistory, level],
         });
       },
 
       /**
        * Reset the game to initial state
        * 
-       * Clears all game state and returns to NOT_STARTED state.
+       * Resets all game state including tone level, scenario, and history.
        * 
        * @example
-       * resetGame(); // Reset game completely
+       * resetGame(); // Reset game state
        */
       resetGame: () => {
         set({
-          ...defaultState,
+          currentToneLevel: 0.0,
+          currentScenario: null,
+          selectedResponse: null,
+          gameState: GameState.NOT_STARTED,
+          toneHistory: [],
         });
       },
-      
+
       /**
        * Reset the store to initial state
-       *
+       * 
        * Clears all persisted state and returns to default values.
-       * Useful for testing or user-initiated resets.
+       * Useful for testing or manual state resets.
        */
       reset: () => {
-        set({ ...defaultState });
+        set({
+          ...defaultState,
+        });
       },
     }),
     {
@@ -257,7 +266,6 @@ export const useGameStore = create<GameStoreState>()(
       
       /**
        * Partialize function - only persist these state properties
-       * Actions are not persisted as they are functions
        */
       partialize: (state): GameStorePersistState => ({
         currentToneLevel: state.currentToneLevel,
@@ -273,7 +281,7 @@ export const useGameStore = create<GameStoreState>()(
       version: 1,
       
       /**
-       * Storage wrapper - uses localStorage with proper typing
+       * Storage wrapper - uses localStorage
        */
       storage: (typeof localStorage !== 'undefined' 
         ? ({
@@ -287,38 +295,37 @@ export const useGameStore = create<GameStoreState>()(
 );
 
 /**
- * Helper function to get scenarios for the game
+ * Helper function to create a scenario
  * 
- * This can be extended to load scenarios from external sources.
- * 
- * @returns Array of default scenarios for testing
+ * @param id - Scenario ID
+ * @param title - Scenario title
+ * @param description - Scenario description
+ * @param toneLevel - Initial tone level
+ * @returns A new scenario object
  */
-export const getDefaultScenarios = (): Scenario[] => [
-  {
-    id: 'scenario-1',
-    title: 'Daily Challenge',
-    description: 'A typical day at work with various social interactions',
-    toneLevel: 0.0,
-    options: [
-      { id: 'opt-1', text: 'Ignore everyone and work silently', toneChange: -5.0 },
-      { id: 'opt-2', text: 'Greet colleagues with a smile', toneChange: +3.0 },
-      { id: 'opt-3', text: 'Discuss work concerns with teammates', toneChange: -1.0 },
-    ],
+export const createScenario = (
+  id: string,
+  title: string,
+  description: string,
+  toneLevel: number
+): Scenario => ({
+  id,
+  title,
+  description,
+  context: description,
+  category: ScenarioCategory.GENERAL,
+  difficulty: ScenarioDifficulty.BEGINNER,
+  initialARC: {
+    appreciation: 5,
+    reality: 5,
+    communication: 5,
+    total: 15,
+    average: 5,
   },
-  {
-    id: 'scenario-2',
-    title: 'Weekend Plans',
-    description: 'Friends asking about weekend activities',
-    toneLevel: 5.0,
-    options: [
-      { id: 'opt-1', text: 'Make excuses to stay home', toneChange: -2.0 },
-      { id: 'opt-2', text: 'Enthusiastically join the plans', toneChange: +5.0 },
-      { id: 'opt-3', text: 'Suggest an alternative activity', toneChange: +2.0 },
-    ],
-  },
-];
-
-export default useGameStore;
+  initialTone: toneLevel,
+  toneLevel,
+  options: [],
+});
 
 /**
  * Helper function to reset the game store

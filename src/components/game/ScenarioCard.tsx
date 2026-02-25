@@ -9,12 +9,13 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '../lib/cn';
+import { cn } from '../../lib/cn';
 import { Button } from '../ui/Button';
 import ToneGauge from './ToneGauge';
 import ARCTriangle from './ARCTriangle';
-import { Scenario, ResponseOption, ARCState } from '../../types/game';
+import { Scenario } from '../../store/gameStore';
 import { ScenarioCategory, ScenarioDifficulty } from '../../types/scenarios';
+import { ARCState } from '../../types/game';
 
 interface ScenarioCardProps {
   /** Current scenario to display */
@@ -32,14 +33,14 @@ interface ScenarioCardProps {
   /** Whether to show feedback after response */
   showFeedback?: boolean;
   /** Selected option for feedback */
-  selectedOption?: ResponseOption | null;
+  selectedOption?: { id: string; text: string; toneChange: number } | null;
   /** Feedback result */
   feedbackResult?: {
     isOptimal: boolean;
     toneChange: number;
     newToneLevel: number;
     explanation: string;
-  };
+  } | null;
 }
 
 /**
@@ -95,7 +96,7 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
 
   /**
-   * Handle response selection
+   * Handle option click
    */
   const handleOptionClick = (optionId: string) => {
     setSelectedOptionId(optionId);
@@ -187,7 +188,7 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({
         <div className="p-6">
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">Scenario</h3>
-            <p className="text-gray-600 leading-relaxed">{scenario.context}</p>
+            <p className="text-gray-600 leading-relaxed">{scenario.description}</p>
           </div>
 
           {/* Tone Gauge */}
@@ -209,51 +210,49 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({
           </div>
 
           {/* Response Options */}
-          <div>
+          <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Response</h3>
             <div className="space-y-3">
-              <AnimatePresence>
-                {scenario.options.map((option, index) => (
-                  <motion.div
-                    key={option.id}
-                    variants={optionVariants}
-                    initial="hidden"
-                    animate="visible"
-                    custom={index}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button
-                      onClick={() => handleOptionClick(option.id)}
-                      variant={selectedOptionId === option.id ? 'primary' : 'outline'}
-                      className="w-full text-left p-4"
-                      disabled={showFeedback && selectedOption?.id !== option.id}
-                    >
-                      <div className="flex items-start justify-between w-full">
-                        <span className="flex-1">{option.text}</span>
-                        {selectedOptionId === option.id && (
-                          <span className="text-sm text-gray-500 ml-2">
-                            {option.toneImpact > 0 ? `+${option.toneImpact}` : option.toneImpact} tone
-                          </span>
-                        )}
-                      </div>
-                    </Button>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+              {scenario.options.map((option: { id: string; text: string; toneChange: number }, index: number) => (
+                <motion.button
+                  key={option.id}
+                  variants={optionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={index}
+                  onClick={() => handleOptionClick(option.id)}
+                  className={cn(
+                    'w-full p-4 rounded-lg border-2 text-left transition-all',
+                    selectedOptionId === option.id
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50',
+                    selectedOption?.id === option.id && 'ring-2 ring-blue-500'
+                  )}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-gray-800">{option.text}</span>
+                    <span className={cn(
+                      'text-sm font-semibold',
+                      option.toneChange >= 0 ? 'text-green-600' : 'text-red-600'
+                    )}>
+                      {option.toneChange >= 0 ? '+' : ''}{option.toneChange.toFixed(1)}
+                    </span>
+                  </div>
+                </motion.button>
+              ))}
             </div>
           </div>
 
           {/* Feedback Section */}
-          {showFeedback && feedbackResult && selectedOption && (
+          {showFeedback && feedbackResult && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className={cn(
-                'mt-6 p-4 rounded-lg',
+                'p-4 rounded-lg border',
                 feedbackResult.isOptimal
-                  ? 'bg-green-50 border border-green-200'
-                  : 'bg-red-50 border border-red-200'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-red-50 border-red-200'
               )}
             >
               <div className="flex items-start">
@@ -267,7 +266,7 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({
                     </svg>
                   ) : (
                     <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293-1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                   )}
                 </div>

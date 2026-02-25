@@ -9,7 +9,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '../lib/cn';
+import { cn } from '../../lib/cn';
 import { Button } from '../ui/Button';
 
 interface TutorialModalProps {
