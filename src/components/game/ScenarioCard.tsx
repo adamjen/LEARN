@@ -47,20 +47,20 @@ interface ScenarioCardProps {
  * Category color mapping for visual distinction
  */
 const categoryColors: Record<ScenarioCategory, string> = {
-  workplace: 'bg-blue-500',
-  family: 'bg-green-500',
-  friends: 'bg-purple-500',
-  general: 'bg-gray-500',
+  workplace: 'bg-blue-600 text-white',
+  family: 'bg-green-600 text-white',
+  friends: 'bg-purple-600 text-white',
+  general: 'bg-gray-600 text-white',
 };
 
 /**
  * Difficulty badge colors
  */
 const difficultyColors: Record<ScenarioDifficulty, string> = {
-  beginner: 'bg-green-100 text-green-800',
-  intermediate: 'bg-yellow-100 text-yellow-800',
-  advanced: 'bg-orange-100 text-orange-800',
-  expert: 'bg-red-100 text-red-800',
+  beginner: 'bg-green-600 text-white',
+  intermediate: 'bg-yellow-600 text-white',
+  advanced: 'bg-orange-600 text-white',
+  expert: 'bg-red-600 text-white',
 };
 
 /**
@@ -172,8 +172,8 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({
     >
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header with category and difficulty */}
-        <div className="bg-gradient-to-r from-primary to-secondary p-6 text-white">
-          <div className="flex items-center justify-between mb-2">
+        <div className="bg-slate-800 p-6 text-white">
+          <div className="flex items-center justify-between mb-4">
             <span className={cn('px-3 py-1 rounded-full text-sm font-medium', categoryColors[scenario.category])}>
               {getCategoryName(scenario.category)}
             </span>
@@ -181,7 +181,7 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({
               {getDifficultyName(scenario.difficulty)}
             </span>
           </div>
-          <h2 className="text-2xl font-bold mb-2">{scenario.title}</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">{scenario.title}</h2>
         </div>
 
         {/* Scenario Context */}

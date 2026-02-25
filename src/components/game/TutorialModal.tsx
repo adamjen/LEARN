@@ -346,19 +346,19 @@ export const TutorialModal: React.FC<TutorialModalProps> = ({
             className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-primary to-secondary p-6 text-white">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold">Tone Navigator Tutorial</h2>
-                  <p className="text-purple-100 mt-1">
+                  <h2 className="text-2xl font-bold text-white">Tone Navigator Tutorial</h2>
+                  <p className="text-blue-100 mt-1">
                     Learn the basics in just a few minutes
                   </p>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold">
+                  <div className="text-3xl font-bold text-white">
                     {currentStep + 1}
                   </div>
-                  <div className="text-sm text-purple-100">
+                  <div className="text-sm text-blue-100">
                     of {TUTORIAL_STEPS.length}
                   </div>
                 </div>

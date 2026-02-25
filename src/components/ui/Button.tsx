@@ -20,16 +20,16 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'default', size = 'default', children, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
+    const baseStyles = 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
     
     const variants = {
-      default: 'bg-primary text-white hover:bg-primary/90',
-      primary: 'bg-primary text-white hover:bg-primary/90',
-      secondary: 'bg-secondary text-white hover:bg-secondary/90',
-      outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-      ghost: 'hover:bg-accent hover:text-accent-foreground',
-      link: 'text-primary underline-offset-4 hover:underline',
-      destructive: 'bg-destructive text-white hover:bg-destructive/90',
+      default: 'bg-blue-600 text-white hover:bg-blue-700',
+      primary: 'bg-blue-600 text-white hover:bg-blue-700',
+      secondary: 'bg-purple-600 text-white hover:bg-purple-700',
+      outline: 'border-2 border-blue-600 text-blue-600 bg-white hover:bg-blue-50',
+      ghost: 'text-gray-700 hover:bg-gray-100',
+      link: 'text-blue-600 underline-offset-4 hover:underline',
+      destructive: 'bg-red-600 text-white hover:bg-red-700',
     };
     
     const sizes = {

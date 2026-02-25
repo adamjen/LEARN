@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useGameStore, GameState } from './store/gameStore';
 import Home from './pages/Home';
 import Game from './pages/Game';
@@ -6,19 +6,22 @@ import Learn from './pages/Learn';
 import Progress from './pages/Progress';
 import Settings from './pages/Settings';
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import MainLayout from './components/layout/MainLayout';
 
 /**
  * Main Application Component for Tone Navigator
- * 
+ *
  * This component sets up the routing structure for the ARC, Tone Scale &
  * Emotional Intelligence learning platform. It serves as the root component
  * that main.tsx renders.
+ *
+ * Note: BrowserRouter is provided by main.tsx to avoid nested router errors.
  */
 function App() {
   const { gameState } = useGameStore();
 
   return (
-    <BrowserRouter>
+    <MainLayout>
       <Routes>
         {/* Home route - main landing page */}
         <Route path="/" element={<Home />} />
@@ -50,7 +53,7 @@ function App() {
         {/* 404 route for unknown paths */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
+    </MainLayout>
   );
 }
 

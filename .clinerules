@@ -1,0 +1,169 @@
+# .clinerules - Roo Code Project Rules
+
+**Version**: 2.1
+**Last Updated**: 2026-02-25
+
+---
+
+## 🛡️ CRITICAL SAFETY
+
+**Environment Sourcing**: Running any npx openclaw command without sourcing the .env file first is **PROHIBITED**.
+
+---
+
+## 🔄 Structured Workflow for Complex Problem-Solving
+
+### Phase 1: Discovery & Analysis
+
+**1. Understand Requirements**
+
+- Read task description carefully
+- Identify constraints and dependencies
+- Determine scope and deliverables
+
+**2. Explore Codebase**
+
+- Use codebase_search() FIRST for new areas
+- Read relevant existing files
+- Identify patterns and conventions
+
+**3. Gather Context**
+
+- Check GLOSSARY.md for terminology
+- Review related documentation
+- Identify potential issues or edge cases
+
+### Phase 2: Planning & Design
+
+**1. Create Detailed Plan**
+
+- Break down task into actionable steps
+- Define clear acceptance criteria
+- Identify required resources and dependencies
+
+**2. Design Architecture**
+
+- Use Mermaid diagrams for complex workflows
+- Define interfaces and data structures
+- Plan testing strategy
+
+**3. Document Assumptions**
+
+- State any assumptions made
+- Identify constraints
+- Note potential risks
+
+### Phase 3: Implementation
+
+**1. Create Todo List**
+
+- Use update_todo_list() with specific, actionable items
+- Order tasks logically for sequential execution
+
+**2. Execute Implementation**
+
+- Start with foundational changes
+- Test incrementally after each change
+- Follow project conventions strictly
+
+**3. Write Tests**
+
+- Place tests in TESTS/ directory
+- Mirror src/ structure
+- Aim for comprehensive coverage
+
+### Phase 4: Verification & Integration
+
+**1. Functional Verification**
+
+- Run tests to verify functionality
+- Test edge cases and error conditions
+- Verify integration with existing code
+
+**2. Quality Review**
+
+- Check code quality standards
+- Verify documentation accuracy
+- Ensure terminology consistency
+
+**3. Final Polish**
+
+- Update related documentation
+- Verify glossary entries
+- Check for any inconsistencies
+
+### Phase 5: Handoff & Completion
+
+**1. Update Todo List**
+
+- Mark all tasks as completed
+- Add any discovered items to finalise
+
+**2. Present Results**
+
+- Use attempt_completion() to finalise task
+- Include summary of changes and impact
+- Reference related files and documentation
+
+**3. Request Mode Switch**
+
+- Use switch_mode() to transition to Code mode
+- Provide clear reason for transition
+- Await user approval
+
+---
+
+## 🎯 Mode-Specific Protocols
+
+### 🏗️ Architect Mode
+
+- **Focus**: Planning, design, strategy
+- **Protocol**: Research First → Document Thoroughly → Use Mermaid → Create Todo Lists → No Implementation
+
+### 💻 Code Mode
+
+- **Focus**: Implementation, file creation, modifications
+- **Protocol**: Follow Structure → TypeScript Strict → Test Incrementally → Document Changes → Commit to GitHub
+
+### ❓ Ask Mode
+
+- **Focus**: Research, explanation, clarification
+- **Protocol**: MCP First → Sourced Information → Clear Terminology → Distinguish Facts
+
+### 🪲 Debug Mode
+
+- **Focus**: Troubleshooting, error resolution
+- **Protocol**: Systematic Analysis → Include Logging → Thorough Testing → Document Root Cause → Update Docs
+
+### 🪃 Orchestrator Mode
+
+- **Focus**: Complex, multi-step coordination
+- **Protocol**: Break Down → Coordinate Modes → Track Progress → Ensure Consistency → Logical Flow
+
+---
+
+## 🚫 Prohibited Patterns
+
+### Tool Usage
+
+- Partial file updates in [`write_to_file()`](write_to_file)
+- Multiple tools in one message (use [`new_task()`](new_task) alone)
+- Missing required parameters
+- Context7 without library ID
+- Running any npx openclaw command without sourcing the .env file first
+
+### Code Practices
+
+- Using `any` types
+- Hardcoded values
+- Magic numbers
+- Incomplete comments
+
+### Documentation
+
+- Stale information
+- Inconsistent terminology
+- Missing line references
+- Unsourced claims
+
+---

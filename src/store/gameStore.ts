@@ -134,9 +134,45 @@ export const useGameStore = create<GameStoreState>()(
        * startGame(10.0); // Start game at tone level +10
        */
       startGame: (initialToneLevel = 0.0) => {
+        // Generate initial demo scenario
+        const initialScenario: Scenario = {
+          id: 'demo-scenario-1',
+          title: 'Workplace Communication Challenge',
+          description: 'A team meeting has revealed conflicting information about project deadlines.',
+          context: 'During a team meeting, you discover that different team members have been given different deadline dates for the same project. Some say it is due Friday, others say next Wednesday.',
+          category: ScenarioCategory.WORKPLACE,
+          difficulty: ScenarioDifficulty.BEGINNER,
+          initialARC: {
+            appreciation: 5,
+            reality: 5,
+            communication: 5,
+            total: 15,
+            average: 5,
+          },
+          initialTone: initialToneLevel,
+          toneLevel: initialToneLevel,
+          options: [
+            {
+              id: 'opt-1',
+              text: 'Listen actively and ask clarifying questions to understand the confusion',
+              toneChange: 2.5,
+            },
+            {
+              id: 'opt-2',
+              text: 'Express frustration about the confusion and lack of coordination',
+              toneChange: -3,
+            },
+            {
+              id: 'opt-3',
+              text: 'Suggest a follow-up meeting to align everyone on the correct deadline',
+              toneChange: 1.5,
+            },
+          ],
+        };
+
         set({
           currentToneLevel: initialToneLevel,
-          currentScenario: null,
+          currentScenario: initialScenario,
           selectedResponse: null,
           gameState: GameState.PLAYING,
           toneHistory: [initialToneLevel],
