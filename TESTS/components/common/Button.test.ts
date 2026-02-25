@@ -1,6 +1,6 @@
 /**
  * Button Component Tests
- * 
+ *
  * Comprehensive test suite for the Button component covering:
  * - All variants (primary, secondary, success, warning, error, outline)
  * - All sizes (small, medium, large)
@@ -9,107 +9,43 @@
  * - Disabled state
  * - Full width option
  * - Accessibility features
- * 
+ *
  * @module tests/Button.test
  * @author ARC Project Team
  * @since 2026-02-25
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-
-/**
- * Helper function to create a mock React element
- * 
- * @param tag - HTML tag name
- * @param props - Element properties
- * @param children - Child elements
- * @returns Mock DOM element
- */
-const createMockElement = (
-  tag: string,
-  props: Record<string, string | number> = {},
-  children: Node[] = []
-): HTMLElement => {
-  const element = document.createElement(tag) as HTMLElement;
-  Object.entries(props).forEach(([key, value]) => {
-    element.setAttribute(key, String(value));
-  });
-  children.forEach((child) => element.appendChild(child));
-  return element;
-};
-
-/**
- * Helper function to query elements from document body
- * 
- * @param selector - CSS selector
- * @returns First matching element or null
- */
-const queryElement = (selector: string): HTMLElement | null => {
-  return document.body.querySelector(selector) as HTMLElement | null;
-};
-
-/**
- * Helper function to query all matching elements
- * 
- * @param selector - CSS selector
- * @returns NodeList of matching elements
- */
-const queryAllElements = (selector: string): NodeListOf<HTMLElement> => {
-  return document.body.querySelectorAll(selector) as NodeListOf<HTMLElement>;
-};
-
-/**
- * Helper function to render a button with given props
- * 
- * @param props - Button props
- * @returns The created button element
- */
-const renderButton = (props: Record<string, any> = {}): HTMLElement => {
-  const buttonProps = {
-    className: 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500 shadow-md hover:shadow-lg px-4 py-2 text-base',
-    role: 'button',
-    ...props,
-  };
-
-  const button = createMockElement('button', buttonProps);
-  document.body.appendChild(button);
-  return button;
-};
-
-/**
- * Helper function to clean up document body
- */
-const cleanup = () => {
-  document.body.innerHTML = '';
-};
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
+import React from 'react';
+import { Button } from '../../../src/components/common';
 
 describe('Button Component', () => {
   beforeEach(() => {
-    // Setup DOM before each test
     document.body.innerHTML = '';
-  });
-
-  afterEach(() => {
-    // Cleanup after each test
-    cleanup();
   });
 
   describe('Basic Rendering', () => {
     it('renders button element', () => {
-      renderButton({});
-      expect(document.body.querySelector('button')).toBeTruthy();
+      render(React.createElement(Button, null, 'Test Button'));
+      expect(screen.getByRole('button')).toBeTruthy();
     });
 
     it('renders button with text content', () => {
-      renderButton({ children: 'Submit Form' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.textContent).toContain('Submit Form');
+      render(React.createElement(Button, null, 'Submit Form'));
+      expect(screen.getByRole('button', { name: /submit form/i })).toBeInTheDocument();
     });
 
-    it('applies custom className', () => {
-      renderButton({ className: 'custom-class' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('custom-class');
+    it('renders with children content', () => {
+      render(React.createElement(Button, null, 'Click Me'));
+      expect(screen.getByRole('button')).toHaveTextContent('Click Me');
+    });
+
+    it('renders button with aria-label', () => {
+      render(React.createElement(Button, { 'aria-label': 'Close dialog' }, 'X'));
+      expect(screen.getByLabelText('Close dialog')).toBeTruthy();
     });
   });
 
@@ -118,332 +54,318 @@ describe('Button Component', () => {
 
     variants.forEach((variant) => {
       it(`renders with ${variant} variant`, () => {
-        let className = '';
-        
-        switch (variant) {
-          case 'primary':
-            className = 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500';
-            break;
-          case 'secondary':
-            className = 'bg-gray-600 hover:bg-gray-700 text-white focus:ring-gray-500';
-            break;
-          case 'success':
-            className = 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500';
-            break;
-          case 'warning':
-            className = 'bg-yellow-600 hover:bg-yellow-700 text-white focus:ring-yellow-500';
-            break;
-          case 'error':
-            className = 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500';
-            break;
-          case 'outline':
-            className = 'bg-transparent hover:bg-gray-100 text-blue-600 border-2 border-blue-600 focus:ring-blue-500';
-            break;
-        }
+        render(React.createElement(Button, { variant: variant as any }, 'Button'));
+        const button = screen.getByRole('button');
 
-        renderButton({ className });
-        const button = document.body.querySelector('button') as HTMLElement;
-        expect(button.className).toContain(className.split(' ')[0]);
+        if (variant === 'primary') {
+          expect(button).toHaveClass('bg-blue-600');
+          expect(button).toHaveClass('hover:bg-blue-700');
+          expect(button).toHaveClass('text-white');
+        } else if (variant === 'secondary') {
+          expect(button).toHaveClass('bg-gray-600');
+          expect(button).toHaveClass('hover:bg-gray-700');
+          expect(button).toHaveClass('text-white');
+        } else if (variant === 'success') {
+          expect(button).toHaveClass('bg-green-600');
+          expect(button).toHaveClass('hover:bg-green-700');
+          expect(button).toHaveClass('text-white');
+        } else if (variant === 'warning') {
+          expect(button).toHaveClass('bg-yellow-600');
+          expect(button).toHaveClass('hover:bg-yellow-700');
+          expect(button).toHaveClass('text-white');
+        } else if (variant === 'error') {
+          expect(button).toHaveClass('bg-red-600');
+          expect(button).toHaveClass('hover:bg-red-700');
+          expect(button).toHaveClass('text-white');
+        } else if (variant === 'outline') {
+          expect(button).toHaveClass('bg-transparent');
+          expect(button).toHaveClass('hover:bg-gray-100');
+          expect(button).toHaveClass('border-2');
+        }
       });
     });
 
     it('defaults to primary variant styles', () => {
-      renderButton({});
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('bg-blue-600');
+      render(React.createElement(Button, null, 'Default Variant'));
+      expect(screen.getByRole('button')).toHaveClass('bg-blue-600');
+      expect(screen.getByRole('button')).toHaveClass('text-white');
     });
   });
 
   describe('Button Sizes', () => {
-    const sizes = [
-      { name: 'small', classes: ['px-3', 'py-1.5', 'text-sm'] },
-      { name: 'medium', classes: ['px-4', 'py-2', 'text-base'] },
-      { name: 'large', classes: ['px-6', 'py-3', 'text-lg'] },
-    ];
+    const sizes = ['small', 'medium', 'large'];
 
-    sizes.forEach(({ name, classes }) => {
-      it(`renders with ${name} size`, () => {
-        const sizeClasses = classes.join(' ');
-        renderButton({ className: sizeClasses });
-        const button = document.body.querySelector('button') as HTMLElement;
-        
-        classes.forEach((cls) => {
-          expect(button.className).toContain(cls);
-        });
+    sizes.forEach((size) => {
+      it(`renders with ${size} size`, () => {
+        render(React.createElement(Button, { size: size as any }, 'Button'));
+        const button = screen.getByRole('button');
+
+        if (size === 'small') {
+          expect(button).toHaveClass('px-3');
+          expect(button).toHaveClass('py-1.5');
+          expect(button).toHaveClass('text-sm');
+        } else if (size === 'medium') {
+          expect(button).toHaveClass('px-4');
+          expect(button).toHaveClass('py-2');
+          expect(button).toHaveClass('text-base');
+        } else if (size === 'large') {
+          expect(button).toHaveClass('px-6');
+          expect(button).toHaveClass('py-3');
+          expect(button).toHaveClass('text-lg');
+        }
       });
     });
 
     it('defaults to medium size', () => {
-      renderButton({});
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('px-4');
-      expect(button.className).toContain('py-2');
+      render(React.createElement(Button, null, 'Default Size'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('px-4');
+      expect(button).toHaveClass('py-2');
     });
   });
 
   describe('Loading State', () => {
-    it('displays loading spinner when loading is true', () => {
-      renderButton({
-        'aria-busy': 'true',
-        disabled: 'true',
-      });
-      const button = document.body.querySelector('button') as HTMLButtonElement;
-      expect(button.getAttribute('aria-busy')).toBe('true');
-      expect(button.disabled).toBe(true);
+    it('renders spinner when loading is true', () => {
+      render(React.createElement(Button, { loading: true }, 'Loading Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('disabled');
+      expect(button).toHaveClass('disabled:opacity-50');
+      expect(button).toHaveClass('disabled:cursor-not-allowed');
     });
 
-    it('shows loading text when loading', () => {
-      renderButton({ children: 'Loading...' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.textContent).toContain('Loading...');
+    it('does not render spinner when loading is false', () => {
+      render(React.createElement(Button, { loading: false }, 'Normal Button'));
+      const button = screen.getByRole('button');
+      expect(button).not.toHaveAttribute('disabled');
     });
 
-    it('displays spinner animation class', () => {
-      renderButton({ className: 'animate-spin' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('animate-spin');
-    });
-  });
+    it('disables button when loading', async () => {
+      const handleClick = vi.fn();
+      render(React.createElement(Button, { loading: true, onClick: handleClick }, 'Loading'));
+      const button = screen.getByRole('button');
 
-  describe('Full Width Option', () => {
-    it('applies full width when fullWidth is true', () => {
-      renderButton({ className: 'w-full' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('w-full');
-    });
-
-    it('does not apply full width by default', () => {
-      renderButton({});
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).not.toContain('w-full');
-    });
-  });
-
-  describe('Icon Support', () => {
-    it('renders icon when provided', () => {
-      renderButton({ children: '★' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.textContent).toContain('★');
-    });
-
-    it('positions icon on the left by default', () => {
-      renderButton({ className: 'mr-2' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('mr-2');
-    });
-
-    it('positions icon on the right when specified', () => {
-      renderButton({ className: 'ml-2' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('ml-2');
-    });
-
-    it('does not render icon when not provided', () => {
-      renderButton({ children: '' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.textContent).toBe('');
+      await userEvent.click(button);
+      expect(handleClick).not.toHaveBeenCalled();
     });
   });
 
   describe('Disabled State', () => {
-    it('is disabled when disabled prop is true', () => {
-      renderButton({ disabled: 'true' });
-      const button = document.body.querySelector('button') as HTMLButtonElement;
-      expect(button.disabled).toBe(true);
+    it('renders disabled button with correct styling', () => {
+      render(React.createElement(Button, { disabled: true }, 'Disabled Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('disabled');
+      expect(button).toHaveClass('disabled:opacity-50');
+      expect(button).toHaveClass('disabled:cursor-not-allowed');
     });
 
-    it('has reduced opacity when disabled', () => {
-      renderButton({ className: 'opacity-50' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('opacity-50');
+    it('prevents click on disabled button', async () => {
+      const handleClick = vi.fn();
+      render(React.createElement(Button, { disabled: true, onClick: handleClick }, 'Disabled'));
+      const button = screen.getByRole('button');
+
+      await userEvent.click(button);
+      expect(handleClick).not.toHaveBeenCalled();
     });
 
-    it('has no cursor when disabled', () => {
-      renderButton({ className: 'cursor-not-allowed' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('cursor-not-allowed');
-    });
+    it('allows click on enabled button', async () => {
+      const handleClick = vi.fn();
+      render(React.createElement(Button, { onClick: handleClick }, 'Enabled'));
+      const button = screen.getByRole('button');
 
-    it('is disabled when loading', () => {
-      renderButton({ 'aria-busy': 'true', disabled: 'true' });
-      const button = document.body.querySelector('button') as HTMLButtonElement;
-      expect(button.disabled).toBe(true);
+      await userEvent.click(button);
+      expect(handleClick).toHaveBeenCalled();
     });
   });
 
-  describe('Click Handler', () => {
-    it('calls onClick when clicked', () => {
-      const handleClick = vi.fn();
-      const button = createMockElement('button', { 'data-testid': 'test-button' });
-      button.addEventListener('click', handleClick);
-      document.body.appendChild(button);
-
-      button.click();
-      expect(handleClick).toHaveBeenCalledTimes(1);
-
-      cleanup();
+  describe('Full Width Option', () => {
+    it('renders with full width when fullWidth is true', () => {
+      render(React.createElement(Button, { fullWidth: true }, 'Full Width Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('w-full');
     });
 
-    it('does not call onClick when disabled', () => {
-      const handleClick = vi.fn();
-      const button = createMockElement('button', { disabled: 'true' });
-      button.addEventListener('click', handleClick);
-      document.body.appendChild(button);
+    it('does not render full width by default', () => {
+      render(React.createElement(Button, null, 'Normal Width Button'));
+      const button = screen.getByRole('button');
+      expect(button).not.toHaveClass('w-full');
+    });
+  });
 
-      button.click();
-      expect(handleClick).not.toHaveBeenCalled();
-
-      cleanup();
+  describe('Icon Support', () => {
+    it('renders button with icon', () => {
+      render(React.createElement(Button, { icon: 'plus' }, 'Button with Icon'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('inline-flex');
+      expect(button).toHaveClass('items-center');
+      expect(button).toHaveClass('justify-center');
     });
 
-    it('does not call onClick when loading', () => {
-      const handleClick = vi.fn();
-      const button = createMockElement('button', {
-        'aria-busy': 'true',
-        disabled: 'true',
-      });
-      button.addEventListener('click', handleClick);
-      document.body.appendChild(button);
+    it('renders icon on left side', () => {
+      render(React.createElement(Button, { icon: 'plus', iconPosition: 'left' }, 'Left Icon'));
+      const button = screen.getByRole('button');
+      // Icon position affects child order, not class
+      expect(button).toBeInTheDocument();
+    });
 
-      button.click();
-      expect(handleClick).not.toHaveBeenCalled();
-
-      cleanup();
+    it('renders icon on right side by default', () => {
+      render(React.createElement(Button, { icon: 'plus' }, 'Right Icon'));
+      const button = screen.getByRole('button');
+      expect(button).toBeInTheDocument();
     });
   });
 
   describe('Accessibility', () => {
     it('has proper role attribute', () => {
-      renderButton({ role: 'button' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.getAttribute('role')).toBe('button');
+      render(React.createElement(Button, null, 'Button'));
+      const button = screen.getByRole('button');
+      expect(button).toBeInTheDocument();
     });
 
-    it('has aria-busy when loading', () => {
-      renderButton({ 'aria-busy': 'true' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.getAttribute('aria-busy')).toBe('true');
+    it('supports type attribute', () => {
+      render(React.createElement(Button, { type: 'submit' }, 'Submit'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('type', 'submit');
     });
 
-    it('has aria-busy false when not loading', () => {
-      renderButton({ 'aria-busy': 'false' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.getAttribute('aria-busy')).toBe('false');
+    it('supports name attribute', () => {
+      render(React.createElement(Button, { name: 'field' }, 'Field'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('name', 'field');
     });
 
-    it('has focus outline for keyboard navigation', () => {
-      renderButton({ className: 'focus:outline-none focus:ring-2' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('focus:outline-none');
-      expect(button.className).toContain('focus:ring-2');
+    it('supports form attribute', () => {
+      render(React.createElement(Button, { form: 'my-form' }, 'Form Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('form', 'my-form');
     });
   });
 
-  describe('Styling and Appearance', () => {
-    it('has proper shadow', () => {
-      renderButton({ className: 'shadow-md' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('shadow-md');
+  describe('Keyboard Navigation', () => {
+    it('can be focused via keyboard', async () => {
+      render(React.createElement(Button, null, 'Focusable Button'));
+      const button = screen.getByRole('button');
+
+      await userEvent.tab();
+      expect(button).toHaveFocus();
     });
 
-    it('has transition effects', () => {
-      renderButton({ className: 'transition-all duration-200' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('transition-all');
-      expect(button.className).toContain('duration-200');
+    it('triggers onClick with Enter key', async () => {
+      const handleClick = vi.fn();
+      render(React.createElement(Button, { onClick: handleClick }, 'Enter Button'));
+      const button = screen.getByRole('button');
+
+      await userEvent.tab();
+      await userEvent.keyboard('{Enter}');
+      expect(handleClick).toHaveBeenCalled();
     });
 
-    it('has hover effect', () => {
-      renderButton({ className: 'hover:bg-blue-700' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('hover:bg-blue-700');
+    it('triggers onClick with Space key', async () => {
+      const handleClick = vi.fn();
+      render(React.createElement(Button, { onClick: handleClick }, 'Space Button'));
+      const button = screen.getByRole('button');
+
+      await userEvent.tab();
+      await userEvent.keyboard(' ');
+      expect(handleClick).toHaveBeenCalled();
+    });
+  });
+
+  describe('Event Handling', () => {
+    it('calls onClick when clicked', async () => {
+      const handleClick = vi.fn();
+      render(React.createElement(Button, { onClick: handleClick }, 'Click Me'));
+      const button = screen.getByRole('button');
+
+      await userEvent.click(button);
+      expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
-    it('has focus ring', () => {
-      renderButton({ className: 'focus:ring-blue-500' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('focus:ring-blue-500');
+    it('prevents default on click', async () => {
+      const handleClick = vi.fn((e) => e.preventDefault());
+      render(React.createElement(Button, { onClick: handleClick }, 'Prevent Button'));
+      const button = screen.getByRole('button');
+
+      await userEvent.click(button);
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('passes event to onClick handler', async () => {
+      const handleClick = vi.fn();
+      render(React.createElement(Button, { onClick: handleClick }, 'Event Button'));
+      const button = screen.getByRole('button');
+
+      await userEvent.click(button);
+      expect(handleClick).toHaveBeenCalledWith(expect.objectContaining({ type: 'click' }));
     });
   });
 
   describe('Edge Cases', () => {
     it('handles empty children', () => {
-      renderButton({ children: '' });
-      expect(document.body.querySelector('button')).toBeTruthy();
+      render(React.createElement(Button, null, null));
+      const button = screen.getByRole('button');
+      expect(button).toBeInTheDocument();
     });
 
     it('handles null children', () => {
-      renderButton({ children: null as any });
-      expect(document.body.querySelector('button')).toBeTruthy();
+      render(React.createElement(Button, null, null));
+      const button = screen.getByRole('button');
+      expect(button).toBeInTheDocument();
     });
 
     it('handles undefined children', () => {
-      renderButton({ children: undefined as any });
-      expect(document.body.querySelector('button')).toBeTruthy();
+      render(React.createElement(Button, null, undefined));
+      const button = screen.getByRole('button');
+      expect(button).toBeInTheDocument();
     });
 
-    it('renders with all props simultaneously', () => {
-      renderButton({
-        className: 'bg-green-600 px-6 w-full extra-class',
-        'aria-busy': 'false',
-        disabled: 'false',
-      });
-
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.className).toContain('bg-green-600');
-      expect(button.className).toContain('px-6');
-      expect(button.className).toContain('w-full');
-      expect(button.className).toContain('extra-class');
+    it('handles numeric children', () => {
+      render(React.createElement(Button, null, 123));
+      const button = screen.getByRole('button');
+      expect(button).toHaveTextContent('123');
     });
   });
 
-  describe('Event Handling', () => {
-    it('prevents default on click when appropriate', () => {
-      const button = createMockElement('button', {});
-      let defaultPrevented = false;
-
-      button.addEventListener('click', (e: Event) => {
-        e.preventDefault();
-        defaultPrevented = true;
-      });
-
-      const clickEvent = new MouseEvent('click', { bubbles: true });
-      button.dispatchEvent(clickEvent);
-
-      expect(defaultPrevented).toBe(true);
-
-      cleanup();
-    });
-
-    it('handles keyboard events', () => {
-      const button = createMockElement('button', {});
-      let keyPress = '';
-
-      button.addEventListener('keydown', (e: KeyboardEvent) => {
-        keyPress = e.key;
-      });
-
-      const keyEvent = new KeyboardEvent('keydown', { key: 'Enter' });
-      button.dispatchEvent(keyEvent);
-
-      expect(keyPress).toBe('Enter');
-
-      cleanup();
+  describe('Ref Forwarding', () => {
+    it('forwards ref to button element', () => {
+      const ref = React.createRef<HTMLButtonElement>();
+      render(React.createElement(Button, { ref: ref }, 'Ref Button'));
+      expect(ref.current).toBeInstanceOf(HTMLButtonElement);
     });
   });
 
-  describe('Focus Management', () => {
-    it('can receive focus', () => {
-      renderButton({});
-      const button = document.body.querySelector('button') as HTMLElement;
-      button.focus();
-      expect(document.activeElement).toBe(button);
+  describe('Hover Effects', () => {
+    it('has hover effect on primary variant', () => {
+      render(React.createElement(Button, { variant: 'primary' }, 'Hover Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('hover:bg-blue-700');
     });
 
-    it('has proper tab index', () => {
-      renderButton({ tabindex: '0' });
-      const button = document.body.querySelector('button') as HTMLElement;
-      expect(button.getAttribute('tabindex')).toBe('0');
+    it('has transition effects', () => {
+      render(React.createElement(Button, null, 'Transition Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('transition-all');
+      expect(button).toHaveClass('duration-200');
+    });
+
+    it('has focus ring when focused', () => {
+      render(React.createElement(Button, null, 'Focus Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('focus:ring-2');
+      expect(button).toHaveClass('focus:ring-offset-2');
+    });
+  });
+
+  describe('Custom Styles', () => {
+    it('applies custom className', () => {
+      render(React.createElement(Button, { className: 'custom-class' }, 'Custom Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('custom-class');
+    });
+
+    it('applies inline style', () => {
+      render(React.createElement(Button, { style: { color: 'red' } }, 'Styled Button'));
+      const button = screen.getByRole('button');
+      expect(button).toHaveStyle('color: rgb(255, 0, 0)');
     });
   });
 });

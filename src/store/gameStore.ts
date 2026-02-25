@@ -70,6 +70,7 @@ interface GameStoreState {
   endGame: () => void;
   setToneLevel: (level: number) => void;
   resetGame: () => void;
+  reset: () => void;
 }
 
 /**
@@ -86,8 +87,8 @@ interface GameStorePersistState {
 /**
  * Default state values for the game store
  */
-const defaultState: Omit<GameStoreState, 
-  'startGame' | 'selectResponse' | 'nextScenario' | 'endGame' | 'setToneLevel' | 'resetGame'
+const defaultState: Omit<GameStoreState,
+  'startGame' | 'selectResponse' | 'nextScenario' | 'endGame' | 'setToneLevel' | 'resetGame' | 'reset'
 > = {
   currentToneLevel: 0.0,
   currentScenario: null,
@@ -237,6 +238,16 @@ export const useGameStore = create<GameStoreState>()(
           ...defaultState,
         });
       },
+      
+      /**
+       * Reset the store to initial state
+       *
+       * Clears all persisted state and returns to default values.
+       * Useful for testing or user-initiated resets.
+       */
+      reset: () => {
+        set({ ...defaultState });
+      },
     }),
     {
       /**
@@ -308,3 +319,9 @@ export const getDefaultScenarios = (): Scenario[] => [
 ];
 
 export default useGameStore;
+
+/**
+ * Helper function to reset the game store
+ * Useful for testing or manual state resets
+ */
+export const resetGameStore = () => useGameStore.getState().reset();

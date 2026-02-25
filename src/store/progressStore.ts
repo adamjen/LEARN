@@ -89,6 +89,7 @@ interface ProgressStoreState {
   updateSettings: (settings: Partial<ProgressStoreState['settings']>) => void;
   resetStreak: () => void;
   incrementStreak: () => void;
+  reset: () => void;
 }
 
 /**
@@ -131,8 +132,8 @@ const defaultSettings = {
   tutorialEnabled: true,
 };
 
-const defaultState: Omit<ProgressStoreState, 
-  'completeScenario' | 'updateToneHistory' | 'updateEQScore' | 'resetProgress' | 'updateSettings' | 'resetStreak' | 'incrementStreak'
+const defaultState: Omit<ProgressStoreState,
+  'completeScenario' | 'updateToneHistory' | 'updateEQScore' | 'resetProgress' | 'updateSettings' | 'resetStreak' | 'incrementStreak' | 'reset'
 > = {
   progress: defaultProgress,
   settings: defaultSettings,
@@ -288,16 +289,29 @@ export const useProgressStore = create<ProgressStoreState>()(
        * incrementStreak(); // Increment current streak
        */
       incrementStreak: () => {
-        set({
-          progress: {
-            ...get().progress,
-            currentStreak: get().progress.currentStreak + 1,
-            bestStreak: Math.max(
-              get().progress.bestStreak,
-              get().progress.currentStreak + 1
-            ),
-          },
-        });
+      set({
+      progress: {
+      ...get().progress,
+      currentStreak: get().progress.currentStreak + 1,
+      bestStreak: Math.max(
+      get().progress.bestStreak,
+      get().progress.currentStreak + 1
+      ),
+      },
+      });
+      },
+      
+      /**
+       * Reset the store to initial state
+       *
+       * Clears all persisted state and returns to default values.
+       * Useful for testing or manual state resets.
+       */
+      reset: () => {
+      set({
+      progress: defaultProgress,
+      settings: defaultSettings,
+      });
       },
     }),
     {
@@ -359,3 +373,9 @@ export const calculateEQScores = (
 };
 
 export default useProgressStore;
+
+/**
+ * Helper function to reset the progress store
+ * Useful for testing or manual state resets
+ */
+export const resetProgressStore = () => useProgressStore.getState().reset();

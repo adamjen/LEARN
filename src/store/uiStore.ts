@@ -258,9 +258,21 @@ export const useUIStore = create<UIStoreState>()(
        * resetUI(); // Reset all UI state
        */
       resetUI: () => {
-        set({
-          ...defaultState,
-        });
+      set({
+      ...defaultState,
+      });
+      },
+      
+      /**
+       * Reset the store to initial state
+       *
+       * Clears all persisted state and returns to default values.
+       * Useful for testing or manual state resets.
+       */
+      reset: () => {
+      set({
+      ...defaultState,
+      });
       },
     }),
     {
@@ -324,3 +336,9 @@ export const getNotificationColour = (type: NotificationType): string => {
 };
 
 export default useUIStore;
+
+/**
+ * Helper function to reset the UI store
+ * Useful for testing or manual state resets
+ */
+export const resetUIStore = () => useUIStore.getState().reset();
