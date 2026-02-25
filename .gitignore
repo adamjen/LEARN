@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+dist/
+build/
+out/
+
+# Testing
+coverage/
+*.lcov
+.vitest-results/
+
+# IDE and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional
+.eslintcache
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Documentation
+*.pdf
+*.png
+*.jpg
+*.jpeg
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Cache
+.cache/
+.npm/
+.yarn/
+
+# Lock files (if using monorepo)
+yarn.lock
+
+# Misc
+*.orig
+*.bak

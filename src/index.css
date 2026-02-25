@@ -1,0 +1,83 @@
+/**
+ * Global Styles for Tone Navigator Application
+ * 
+ * This file contains global styles and Tailwind CSS directives.
+ * It's imported in main.tsx to apply styles across the entire application.
+ */
+
+/* Tailwind CSS Directives - These must be at the top */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Styles - Reset and normalize */
+@layer base {
+  /* Set default font family */
+  html {
+    @apply font-sans;
+  }
+
+  /* Remove default margin and set box-sizing */
+  body {
+    @apply m-0 p-0 min-h-screen bg-white;
+  }
+
+  /* Ensure all elements inherit box-sizing */
+  *,
+  *::before,
+  *::after {
+    @apply box-border;
+  }
+}
+
+/* Component Styles - Reusable components */
+@layer components {
+  /* Container utility for centered content */
+  .container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Button base styles */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium
+           transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500;
+  }
+
+  /* Card component styles */
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+
+  /* Gradient background utilities */
+  .bg-gradient-primary {
+    @apply bg-gradient-to-br from-blue-50 to-purple-50;
+  }
+
+  .bg-gradient-secondary {
+    @apply bg-gradient-to-br from-green-50 to-teal-50;
+  }
+
+  .bg-gradient-tertiary {
+    @apply bg-gradient-to-br from-purple-50 to-pink-50;
+  }
+}
+
+/* Utility Styles - Tailwind utilities override */
+@layer utilities {
+  /* Custom utilities that extend Tailwind */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "compilerOptions": {
+    /* TypeScript Configuration for Tone Navigator Project
+     * 
+     * This configuration enables React JSX support, TypeScript strict mode,
+     * and sets up path aliases for cleaner imports in the project.
+     */
+
+    /* Target ES2020 for modern browser support with good compatibility */
+    "target": "ES2020",
+    
+    /* Use ES modules for module system */
+    "module": "ESNext",
+    
+    /* Module resolution: Use Node.js resolution for package.json main/exports */
+    "moduleResolution": "bundler",
+    
+    /* Enable JSX support for React with React JSX transform */
+    "jsx": "react-jsx",
+    
+    /* Strict type checking enabled for better code quality */
+    "strict": true,
+    
+    /* Enable all strict type-checking options */
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "useUnknownInCatchVariables": true,
+    
+    /* Always ensure type equality checks are thorough */
+    "alwaysStrict": true,
+    
+    /* Disable emitting declarations by default - handled by build process */
+    "noEmit": true,
+    
+    /* Disable JavaScript file processing - TypeScript only */
+    "skipLibCheck": true,
+    
+    /* Enable experimental decorators (for potential future use) */
+    "experimentalDecorators": true,
+    
+    /* Enable checking of .js files - only if they exist */
+    "checkJs": false,
+    
+    /* Enable import from type-only packages */
+    "esModuleInterop": true,
+    
+    /* Allow importing .d.ts files */
+    "allowSyntheticDefaultImports": true,
+    
+    
+    /* Resolve type references from node_modules */
+    "resolveJsonModule": true,
+    
+    /* Allow JavaScript files to be imported */
+    "allowJs": false,
+    
+    /* Force handling of missing types */
+    "forceConsistentCasingInFileNames": true,
+    
+    /* Disable emitting - handled by Vite */
+    "declaration": false,
+    
+    /* Generate sourcemaps for debugging */
+    "sourceMap": true,
+    
+    /* No unused variables - handled by ESLint */
+    "noUnusedLocals": false,
+    
+    /* No unused parameters - handled by ESLint */
+    "noUnusedParameters": false,
+    
+    /* No implicit returns - strict mode */
+    "noImplicitReturns": true,
+    
+    /* No fallthrough in case statements */
+    "noFallthroughCasesInSwitch": true,
+    
+    /* Path aliases for cleaner imports */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@stores/*": ["src/stores/*"],
+      "@utils/*": ["src/utils/*"],
+      "@types/*": ["src/types/*"],
+      "@assets/*": ["src/assets/*"]
+    }
+  },
+  
+  /* Include all source files */
+  "include": ["src"],
+  
+  /* Exclude node_modules and build outputs */
+  "exclude": ["node_modules", "dist", "build"]
+}
